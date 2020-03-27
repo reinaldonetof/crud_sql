@@ -1,17 +1,17 @@
 const express = require("express");
 const pessoasController = require("../controllers/pessoas");
 
-const pessoasRouter = ({ connection }) => {
+const pessoasRouter = ({ knex }) => {
   const router = express.Router();
-  router.get("/", pessoasController.index.bind(null, connection));
+  router.get("/", pessoasController.index.bind(null, knex));
   router.get(
     "/delete/:id",
-    pessoasController.deletePerson.bind(null, connection)
+    pessoasController.deletePerson.bind(null, knex)
   );
   router.get("/create", pessoasController.createForm);
-  router.post("/create", pessoasController.createProcess.bind(null, connection));
-  router.get("/update/:id", pessoasController.updateForm.bind(null, connection));
-  router.post("/update/:id", pessoasController.updateProcess.bind(null, connection));
+  router.post("/create", pessoasController.createProcess.bind(null, knex));
+  router.get("/update/:id", pessoasController.updateForm.bind(null, knex));
+  router.post("/update/:id", pessoasController.updateProcess.bind(null, knex));
   return router;
 };
 
