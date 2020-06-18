@@ -1,7 +1,17 @@
-const { findAll, deleteOne, create, findOne, update } = require("../models/pessoas");
+const {
+  findAll,
+  deleteOne,
+  create,
+  findOne,
+  update,
+} = require("../models/pessoas");
 
 const index = async (connection, req, res) => {
-  const listaPessoas = await findAll(connection);
+  params = {
+    pageSize: req.query.pageSize || 2,
+    currentPage: req.query.page || 0,
+  };
+  const listaPessoas = await findAll(connection, params);
   res.render("pessoas/index", { pessoas: listaPessoas });
 };
 
@@ -15,19 +25,19 @@ const createForm = (req, res) => {
 };
 
 const createProcess = async (connection, req, res) => {
-  await create(connection, req.body)
-  res.redirect("/pessoas")
-}
+  await create(connection, req.body);
+  res.redirect("/pessoas");
+};
 
 const updateForm = async (connection, req, res) => {
-  const pessoa = await findOne(connection, req.params.id)
+  const pessoa = await findOne(connection, req.params.id);
   res.render("pessoas/update", { pessoa });
 };
 
 const updateProcess = async (connection, req, res) => {
-  await update(connection, req.params.id, req.body)
-  res.redirect("/pessoas")
-}
+  await update(connection, req.params.id, req.body);
+  res.redirect("/pessoas");
+};
 
 module.exports = {
   index,
@@ -35,5 +45,5 @@ module.exports = {
   createForm,
   createProcess,
   updateForm,
-  updateProcess
+  updateProcess,
 };
