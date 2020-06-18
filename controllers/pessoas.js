@@ -12,7 +12,7 @@ const index = async (connection, req, res) => {
     currentPage: req.query.page || 0,
   };
   const listaPessoas = await findAll(connection, params);
-  res.render("pessoas/index", { pessoas: listaPessoas });
+  res.render("pessoas/index", { listaPessoas });
 };
 
 const deletePerson = async (connection, req, res) => {

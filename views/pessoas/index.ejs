@@ -6,18 +6,44 @@
     <th>Nome</th>
     <th>Ações</th>
   </tr>
-  <% pessoas.map( pessoa => { %>
+  <% listaPessoas.data.map( pessoa => { %>
   <tr>
     <td><%= pessoa.nome %></td>
     <td>
       <div class="btn-group" role="group" aria-label="Basic example">
-        <a type="button" class="btn btn-primary" href="/pessoas/update/<%= pessoa.id %>">Editar</a>
-        <a type="button" class="btn btn-primary" href="/pessoas/delete/<%= pessoa.id %>"
-          onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
+        <a
+          type="button"
+          class="btn btn-primary"
+          href="/pessoas/update/<%= pessoa.id %>"
+          >Editar</a
+        >
+        <a
+          type="button"
+          class="btn btn-primary"
+          href="/pessoas/delete/<%= pessoa.id %>"
+          onclick="return confirm('Deseja realmente excluir?')"
+          >Excluir</a
+        >
       </div>
     </td>
   </tr>
   <% }) %>
 </table>
+
+Mostrar: <a href="/pessoas?pageSize=2">2</a> <a href="/pessoas?pageSize=5">5</a> <a href="/pessoas?pageSize=10">10</a> <a href="/pessoas?pageSize=20">20</a>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <% if(listaPessoas.pagination.currentPage>0) { %>
+      <li class="page-item"><a class="page-link" href="/pessoas?page=<%= (listaPessoas.pagination.currentPage - 1) %>&pageSize=<%= listaPessoas.pagination.pageSize %>">Previous</a></li>
+    <% } %>
+    <% for(let i=0; i<listaPessoas.pagination.pages; i++) { %>
+    <li class="page-item <% if(i==listaPessoas.pagination.currentPage){%>active<%}%>"><a class="page-link" href="/pessoas?page=<%= i %>&pageSize=<%= listaPessoas.pagination.pageSize %>"><%= (i+1) %></a></li>
+    <% } %>
+    <% if(listaPessoas.pagination.currentPage< listaPessoas.pagination.pages-1) { %>
+      <li class="page-item"><a class="page-link" href="/pessoas?page=<%= (listaPessoas.pagination.currentPage + 1) %>&pageSize=<%= listaPessoas.pagination.pageSize %> ">Next</a></li>
+    <% } %>
+    
+  </ul>
+</nav>
 
 <%- include ('../partials/footer.ejs') %>

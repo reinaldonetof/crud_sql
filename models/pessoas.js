@@ -3,7 +3,9 @@ const findAll = (connection, params) => {
     const offset = params.currentPage * params.pageSize;
     const pageSize = params.pageSize;
     const count = await connection("pessoas").count("*");
-    const totalPages = parseInt(count[0].total / pageSize);
+    let pages = count[0]["count(*)"] / pageSize;
+    if (!Number.isInteger(pages)) pages = pages + 1;
+    const totalPages = parseInt(pages);
     const pessoas = await connection("pessoas")
       .select("*")
       .limit(pageSize)
@@ -14,7 +16,7 @@ const findAll = (connection, params) => {
           pagination: {
             pages: totalPages,
             pageSize,
-            currentPage: params.currentPage,
+            currentPage: parseInt(params.currentPage),
           },
         })
       : reject("list not found");
